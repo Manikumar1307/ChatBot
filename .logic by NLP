@@ -1,0 +1,20 @@
+def get_response(user_input):
+    tokens = word_tokenize(user_input.lower())
+
+    for token in tokens:
+        cursor.execute("SELECT response FROM chatbot WHERE keyword=?", (token,))
+        result = cursor.fetchone()
+        if result:
+            return result[0]
+
+    return "I'm not sure how to respond to that."
+
+# Chatbot loop
+while True:
+    user_input = input("You: ")
+    if user_input.lower() == "exit":
+        print("Chatbot: Goodbye!")
+        break
+    print("Chatbot:", get_response(user_input))
+
+conn.close()
